@@ -1,14 +1,32 @@
-import React from "react";
+'use client'
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
 
 export const Footer = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/categories"); // Kendi API'ne göre değiştir
+        const data = await res.json();
+        setCategories(data.slice(0, 6)); // İlk 6 kategori
+      } catch (error) {
+        console.error("Kategori verisi alınamadı:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
-    <footer className="bg-[#F6F6F7] rounded-lg shadow-sm  m-4 dark:bg-[#141624]">
+    <footer className="bg-[#F6F6F7] dark:bg-[#141624] w-full mt-auto">
       <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
         {/* Top Section */}
         <div className="flex flex-col md:flex-row justify-between gap-10">
           {/* About */}
           <div className="max-w-md">
-            <h1 className="mb-2 text-[18px] font-[600] leading-[28px] text-[#181A2A]  dark:text-white">
+            <h1 className="mb-2 text-[18px] font-[600] leading-[28px] text-[#181A2A] dark:text-white">
               About
             </h1>
             <p className="w-72 text-[16px] font-[400] leading-[24px] text-[#696A75] mb-2">
@@ -51,24 +69,13 @@ export const Footer = () => {
               Category
             </h1>
             <ul className="text-[16px] gap-[16px] font-medium text-gray-500 dark:text-gray-400">
-              <li className="mb-2 hover:underline">
-                <a href="#">Lifestyle</a>
-              </li>
-              <li className="mb-2 hover:underline">
-                <a href="#">Technology</a>
-              </li>
-              <li className="mb-2 hover:underline">
-                <a href="#">Travel</a>
-              </li>
-              <li className="mb-2 hover:underline">
-                <a href="#">Business</a>
-              </li>
-              <li className="mb-2 hover:underline">
-                <a href="#">Economy</a>
-              </li>
-              <li className="mb-2 hover:underline">
-                <a href="#">Sports</a>
-              </li>
+              {categories.map((category) => (
+                <li key={category.id} className="mb-2 hover:underline">
+                  <Link href={`/homepage/?category=${category.id}`}>
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

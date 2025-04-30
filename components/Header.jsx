@@ -5,6 +5,7 @@ import { useThemeStore } from "@/store/themeStore.ts";
 import SignInButton from "./SignInButton";
 import { useUser } from "@/hooks/useUser";
 import LogoutButton from "./LogoutButton";
+import Link from "next/link";
 
 export const Header = () => {
   const theme = useThemeStore((state) => state.theme);
@@ -27,13 +28,28 @@ export const Header = () => {
         <div className="hidden w-full md:block md:w-auto">
           <ul className="inline-flex gap-7 ">
             <li>
-              <a>Home</a>
+            <Link
+                href={`/homepage`}
+                className={`hover:underline ${theme === "dark" ? "hover:text-white" : "hover:text-black"}`}
+              >
+                Home
+              </Link>
             </li>
             <li>
-              <a>Write a Blog</a>
+            <Link
+                href={`/write-blog`}
+                className={`hover:underline ${theme === "dark" ? "hover:text-white" : "hover:text-black"}`}
+              >
+                Write a Blog
+              </Link>
             </li>
             <li>
-              <a>My Blogs</a>
+              <Link
+                href={`/author-blogs/?author=${user?.id}`}
+                className={`hover:underline ${theme === "dark" ? "hover:text-white" : "hover:text-black"}`}
+              >
+                My Blogs
+              </Link>
             </li>
             <li>
               <a>Contact</a>

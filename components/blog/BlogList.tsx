@@ -17,6 +17,7 @@ export default function BlogList({
   initialBlogs,
   category,
   author,
+  hasFeatured = true,
   canDelete = false,
 }: BlogListProps) {
   const [blogs, setBlogs] = useState(initialBlogs);
@@ -24,8 +25,7 @@ export default function BlogList({
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const isHomepage = !author && !category;
-  const hasFeatured = isHomepage && blogs.length > 0;
+
 
   const featuredBlog = hasFeatured ? blogs[0] : null;
   const regularBlogs = hasFeatured ? blogs.slice(1) : blogs;
@@ -73,12 +73,12 @@ export default function BlogList({
   return (
     <div className="mb-16">
       <div className="max-w-[1520px] mx-auto px-4">
+       
         {hasFeatured && featuredBlog && (
           <div className="lg:col-span-3 mb-4">
             <FeaturedBlogCard blog={featuredBlog} />
           </div>
         )}
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6 px-4 md:px-6 lg:px-8">
           {regularBlogs.map((blog: any) => (
             <BlogCard key={blog.id} blog={blog} canDelete={canDelete} />

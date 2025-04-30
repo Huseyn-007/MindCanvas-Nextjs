@@ -42,7 +42,7 @@ export async function POST(req:Request){
             body,
             category,
             thumbnail,
-            author_id: authorId
+            author: authorId
         })
         .single();
 
