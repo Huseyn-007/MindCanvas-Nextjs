@@ -1,11 +1,18 @@
 import { createClient } from "@/utils/supabase/server";
 
-export async function GET() {
+export async function GET(req: Request) {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("blogs")
-    .select("*")
-    .order("created_at", { ascending: false });
+
+  const { searchParams } = new URL(req.url);
+  const category = searchParams.get("category");
+
+  let query = supabase.from("blogs").select("*").order("created_at", { ascending: false });
+
+  if (category) {
+    query = query.eq("category", category);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
@@ -17,7 +24,6 @@ export async function GET() {
     headers: { "Content-Type": "application/json" },
   });
 }
-
 export async function POST(req:Request){
     const supabase = await createClient();
     const formbody = await req.json();
